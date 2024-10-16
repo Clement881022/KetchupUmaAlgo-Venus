@@ -1,0 +1,226 @@
+{
+  "umaId": 4105001,
+  "turn": 1,
+  "vital": 100,
+  "maxVital": 100,
+  "isQieZhe": false,
+  "isAiJiao": false,
+  "failureRateBias": 0,
+  "fiveStatus": [
+    107,
+    115,
+    181,
+    109,
+    139
+  ],
+  "fiveStatusLimit": [
+    1800,
+    1636,
+    1854,
+    1432,
+    1400
+  ],
+  "skillPt": 120,
+  "motivation": 3,
+  "cardId": [
+    430137,
+    430028,
+    430107,
+    430010,
+    430097,
+    430019
+  ],
+  "cardJiBan": [
+    20,
+    35,
+    30,
+    15,
+    20,
+    20,
+    0,
+    0
+  ],
+  "trainLevelCount": [
+    6,
+    6,
+    6,
+    6,
+    6
+  ],
+  "zhongMaBlueCount": [
+    0,
+    0,
+    6,
+    9,
+    0
+  ],
+  "zhongMaExtraBonus": [
+    20,
+    0,
+    40,
+    0,
+    20,
+    150
+  ],
+  "isRacing": false,
+  "venusLevelYellow": 0,
+  "venusLevelRed": 0,
+  "venusLevelBlue": 0,
+  "venusSpiritsBottom": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "venusSpiritsUpper": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "venusAvailableWisdom": 0,
+  "venusIsWisdomActive": false,
+  "venusCardFirstClick": false,
+  "venusCardUnlockOutgoing": false,
+  "venusCardIsQingRe": false,
+  "venusCardQingReContinuousTurns": 0,
+  "venusCardOutgoingUsed": [
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "stageInTurn": 1,
+  "cardDistribution": [
+    [
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  ],
+  "cardHint": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "spiritDistribution": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "spiritBonus": null,
+  "trainValue": [
+    [
+      15,
+      0,
+      3,
+      0,
+      0,
+      6,
+      -19
+    ],
+    [
+      0,
+      8,
+      0,
+      7,
+      0,
+      5,
+      -20
+    ],
+    [
+      0,
+      4,
+      12,
+      0,
+      0,
+      6,
+      -20
+    ],
+    [
+      3,
+      0,
+      4,
+      11,
+      0,
+      5,
+      -20
+    ],
+    [
+      2,
+      0,
+      0,
+      0,
+      8,
+      5,
+      0
+    ]
+  ],
+  "failRate": [
+    0,
+    0,
+    0,
+    0,
+    0
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "SimulateUnitTurn":10000,
+  "ShowDecisionNum": 4,
+  "DecisionExtraRound":3,
+
+  "MasterOfGoodFieldPtValue":0,
+  "UsePreferRaces": true,
+  "AlwaysShowRace": true,
+
+  "TargetStatus": [1500, 600, 1260, 1200, 1200, 9999],
+  "BelowTargetStatusScore": [4.384, 2.345, 5.098, 1.392, 1.122, 1],
+  "OverTargetStatusScore": [4.078, 0.102, 3.976, 1.382, 1.325, 1]
+}
