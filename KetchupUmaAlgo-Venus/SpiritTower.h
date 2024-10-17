@@ -12,10 +12,10 @@ public:
 	bool IsFull();
 	void Push(SpiritData spiritData);
 	void Activate();
-	std::array<int,6> GetStatusBonus();
+	std::array<int, 6> GetStatusBonus();
 
 	bool Activated;
-	std::vector<std::vector<SpiritData>> Tower;
+	std::array<std::array<SpiritData, 8>, 4> Tower;
 	std::array<int, 3> VenusLevel;
 
 private:

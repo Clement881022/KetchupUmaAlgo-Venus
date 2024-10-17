@@ -2,11 +2,13 @@
 
 SpiritTower::SpiritTower(std::array<SpiritData, 15> data, std::array<int, 3> venusLevel)
 {
-	Tower.resize(4);
-	Tower[0].resize(1);
-	Tower[1].resize(2);
-	Tower[2].resize(4);
-	Tower[3].resize(8);
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			Tower[i][j] = SpiritData(Color::None, Status::None, 0, 0);
+		}
+	}
 
 	for (int i = 0;i < 8;i++)
 	{

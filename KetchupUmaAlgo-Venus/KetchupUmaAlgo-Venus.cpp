@@ -66,17 +66,17 @@ int main()
 			decisions[i].first = i;
 			decisions[i].second = std::async(std::launch::async, SimulateDecisionRun, thisTurn, DecisionSet(i), simulateUnitTurn);
 		}
-		for (int i = 0;i < 32;i++) { decisions[i].second.wait(); }
+		for (int i = 0; i < 32; i++) { decisions[i].second.wait(); }
 		for (int i = 0; i < 32; i++)
 		{
 			decisionScores[i].first = i;
 			decisionScores[i].second = decisions[i].second.get();
 		}
-		std::sort(decisionScores.begin(), decisionScores.end(), [](const auto& a, const auto& b) {return a.second > b.second;});
+		std::sort(decisionScores.begin(), decisionScores.end(), [](const auto& a, const auto& b) {return a.second > b.second; });
 
 		// get topDecisions
 		std::vector<int> topDecisionIndex;
-		for (int i = 0;i < showDecisionNum;i++)
+		for (int i = 0; i < showDecisionNum; i++)
 		{
 			if (decisionScores[i].second != 0) topDecisionIndex.push_back(decisionScores[i].first);
 		}
@@ -93,29 +93,29 @@ int main()
 		// simulate topDecisions
 		std::vector<std::pair<int, std::future<float>>> topDecisions;
 		std::vector<std::pair<int, float>> topDecisionScores;
-		for (int i = 0; i < showDecisionNum; i++)
+		for (int i = 0; i < topDecisionIndex.size(); i++)
 		{
 			DecisionSet topDecision = DecisionSet(topDecisionIndex[i]);
 			topDecisions.push_back(std::make_pair(topDecisionIndex[i],
 				std::async(std::launch::async, SimulateDecisionRun, thisTurn, topDecision, simulateUnitTurn * decisionExtraRound)));
 		}
-		for (int i = 0; i < showDecisionNum; i++) { topDecisions[i].second.wait(); }
-		for (int i = 0; i < showDecisionNum; i++)
+		for (int i = 0; i < topDecisionIndex.size(); i++) { topDecisions[i].second.wait(); }
+		for (int i = 0; i < topDecisionIndex.size(); i++)
 		{
 			int decisionIndex = topDecisionIndex[i];
 			float firstRoundScore = 0.0f;
-			for (int i = 0;i < 32;i++)
+			for (int i = 0; i < 32; i++)
 			{
 				if (decisionScores[i].first == decisionIndex) firstRoundScore = decisionScores[i].second;
 			}
 			topDecisionScores.push_back(std::make_pair(decisionIndex,
 				(topDecisions[i].second.get() * decisionExtraRound + firstRoundScore) / (decisionExtraRound + 1)));
 		}
-		std::sort(topDecisionScores.begin(), topDecisionScores.end(), [](const auto& a, const auto& b) {return a.second > b.second;});
+		std::sort(topDecisionScores.begin(), topDecisionScores.end(), [](const auto& a, const auto& b) {return a.second > b.second; });
 
 		// print topDecisions
 		std::cout << "\n************************************\n";
-		for (int i = 0;i < topDecisionScores.size();i++)
+		for (int i = 0; i < topDecisionScores.size(); i++)
 		{
 			if (topDecisionScores[i].second == 0) continue;
 			DecisionSet decisionSet = DecisionSet(topDecisionScores[i].first);
@@ -133,7 +133,7 @@ int main()
 		std::cout << DecisionToString[decisionIndex] << "]";
 
 		// check if spirit event possible
-		if (!simulator->SpiritEventPossible(result.DuringTurnDecision)) continue;
+		if (!simulator->SpiritEventPossible(result.DuringTurnDecision)) { continue; }
 
 		// simulate spirit
 		std::array<std::future<float>, 3> spirits;
