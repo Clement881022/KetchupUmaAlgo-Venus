@@ -113,32 +113,26 @@ void VenusSceneSimulator::PrintInfo()
 	std::cout << "UmaLimitBreak: " << UmaLimitBreak << "\n";
 	std::cout << "Vital: " << Vital << "/" << MaxVital << "\n";
 	std::cout << "Motivation: " << Motivation << "\n";
-
 	std::cout << "CurrentStatus: ";
 	for (int i = 0; i < 6; ++i)
 		std::cout << CurrentStatus[i] << " ";
 	std::cout << "\n";
-
 	std::cout << "StatusLimit: ";
 	for (int i = 0; i < 6; ++i)
 		std::cout << StatusLimit[i] << " ";
 	std::cout << "\n";
-
 	std::cout << "InheritStatus: ";
 	for (int i = 0; i < 6; ++i)
 		std::cout << InheritStatus[i] << " ";
 	std::cout << "\n";
-
 	std::cout << "FailRate: ";
 	for (int i = 0; i < 5; ++i)
 		std::cout << FailRate[i] << " ";
 	std::cout << "\n";
-
 	std::cout << "VitalCost: ";
 	for (int i = 0; i < 5; ++i)
 		std::cout << VitalCost[i] << " ";
 	std::cout << "\n";
-
 	std::cout << "TrainValue: ";
 	for (int i = 0; i < 5; ++i)
 	{
@@ -148,15 +142,12 @@ void VenusSceneSimulator::PrintInfo()
 		std::cout << "] ";
 	}
 	std::cout << "\n";
-
 	std::cout << "Race Bonus: " << _raceBonus << "\n";
 	std::cout << "Continuous Race Count: " << _continuousRaceCount << "\n";
-
 	std::cout << "Status Ratio: ";
 	for (float ratio : _statusRatio)
 		std::cout << ratio << " ";
 	std::cout << "\n\n";
-
 	for (int i = 0; i < 5; i++)
 	{
 		std::cout << TrainToString[i] << std::endl;
@@ -205,7 +196,6 @@ float VenusSceneSimulator::Simulate()
 	{
 		ResetTurn();
 		BeforeTurnEvent();
-		// PrintInfo();
 		_beforeTurnDecision = _evaluateBeforeTurnDecision();
 		BeforeTurnDecision(_beforeTurnDecision);
 		_duringTurnDecision = _evaluateDuringTurnDecision();
@@ -213,11 +203,6 @@ float VenusSceneSimulator::Simulate()
 		AfterTurnEvent();
 		_afterTurnDecision = _evaluateAfterTurnDecision();
 		AfterTurnDecision(_afterTurnDecision);
-		/*
-		cout << "ActivateWisdom: " << _beforeTurnDecision << endl;
-		cout << "DuringTurnDecision: " << DecisionToString[static_cast<int>(_duringTurnDecision)] << endl;
-		cout << "If Speical Event Take: " << ColorToString[static_cast<int>(_afterTurnDecision)] << endl;
-		*/
 		Turn += 1;
 	}
 	return _evaluateStatusScore(CurrentStatus);
@@ -225,11 +210,7 @@ float VenusSceneSimulator::Simulate()
 
 void VenusSceneSimulator::ResetTurn()
 {
-	for (int i = 0; i < 5; i++)
-	{
-		Facilities[i]->ResetTurn();
-	}
-
+	for (int i = 0; i < 5; i++) { Facilities[i]->ResetTurn(); }
 	_reshuffleSupportCard();
 	_updateSupportCards();
 	_reshuffleSpirits();
@@ -250,7 +231,6 @@ void VenusSceneSimulator::BeforeTurnEvent()
 	{
 		StatusChange({ 2,2,2,2,2,6 }, false);
 	}
-
 	if (Turn <= 23)
 	{
 		MotivationChange(0.1f);
@@ -489,7 +469,8 @@ void VenusSceneSimulator::AfterTurnEvent()
 		}
 		if (IsVenusCardHangoutUsed[4])
 		{
-			EventStatusChange({ 2,2,2,2,2,60 });
+			EventStatusChange({ 2,2,2,2,2,10 });
+			StatusChange({ 0,0,0,0,0,60 }, false);
 		}
 		EventStatusChange({ 8,8,8,8,8,0 });
 		StatusChange({ 5,5,5,5,5,20 }, false);
@@ -587,18 +568,12 @@ void VenusSceneSimulator::MotivationChange(float amount)
 	if (isMotivationUp)
 	{
 		Motivation = std::min(Motivation + intAmount, 4);
-		if (extraChange)
-		{
-			Motivation = std::min(Motivation + 1, 4);
-		}
+		if (extraChange) { Motivation = std::min(Motivation + 1, 4); }
 	}
 	else
 	{
 		Motivation = std::max(Motivation - intAmount, 0);
-		if (extraChange)
-		{
-			Motivation = std::max(Motivation - 1, 0);
-		}
+		if (extraChange) { Motivation = std::max(Motivation - 1, 0); }
 	}
 }
 
@@ -641,18 +616,9 @@ void VenusSceneSimulator::Click(Train train)
 void VenusSceneSimulator::Rest()
 {
 	float random = GetZeroOneRandomFloat();
-	if (random <= 0.134f)
-	{
-		VitalChange(30);
-	}
-	else if (random <= 0.134f + 0.613f)
-	{
-		VitalChange(50);
-	}
-	else
-	{
-		VitalChange(70);
-	}
+	if (random <= 0.134f) { VitalChange(30); }
+	else if (random <= 0.134f + 0.613f) { VitalChange(50); }
+	else { VitalChange(70); }
 	_pushSpirit(Train::Rest);
 	_continuousRaceCount = 0;
 }
@@ -693,6 +659,12 @@ void VenusSceneSimulator::Hangout()
 		MotivationChange(1.0f);
 	}
 
+	if (Turn >= 24 && Turn <= 71 && GetZeroOneRandomFloat() < 0.2f)
+	{
+		VitalChange(10);
+		MotivationChange(1.0f);
+	}
+
 	_pushSpirit(Train::Hangout);
 	_continuousRaceCount = 0;
 }
@@ -705,7 +677,7 @@ void VenusSceneSimulator::VenusHangout(int index)
 	{
 	case 0:
 		VitalChange(45);
-		StatusChange({ 0, 0, 0, 0, 0, 45 }, false);
+		StatusChange({ 0,0,0,0,0,45 }, false);
 		MotivationChange(1.0f);
 		_pushSpirit(Train::Hangout);
 		VenusCardPtr->Event();
@@ -713,7 +685,7 @@ void VenusSceneSimulator::VenusHangout(int index)
 		break;
 	case 1:
 		VitalChange(32);
-		StatusChange({ 12, 0, 0, 0, 12, 0 }, false);
+		StatusChange({ 12,0,0,0,12,0 }, false);
 		MotivationChange(1.0f);
 		_pushSpirit(Train::Hangout);
 		VenusCardPtr->Event();
@@ -722,7 +694,7 @@ void VenusSceneSimulator::VenusHangout(int index)
 	case 2:
 		MaxVital += 4;
 		VitalChange(32);
-		StatusChange({ 0, 8, 8, 8, 0, 0 }, false);
+		StatusChange({ 0,8,8,8,0,0 }, false);
 		MotivationChange(1.0f);
 		_pushSpirit(Train::Hangout);
 		VenusCardPtr->Event();
@@ -730,7 +702,7 @@ void VenusSceneSimulator::VenusHangout(int index)
 		break;
 	case 3:
 		VitalChange(45);
-		StatusChange({ 0, 15, 15, 15, 0, 0 }, false);
+		StatusChange({ 0,15,15,15,0,0 }, false);
 		MotivationChange(1.0f);
 		_pushSpirit(Train::Hangout);
 		VenusCardPtr->Event();
@@ -738,10 +710,10 @@ void VenusSceneSimulator::VenusHangout(int index)
 		break;
 	case 4:
 		VitalChange(52);
-		StatusChange({ 9, 9, 9, 9, 9, 36 }, false);
+		StatusChange({ 9,9,9,9,9,36 }, false);
 		MotivationChange(1.0f);
 		_pushSpirit(Train::Hangout);
-		VenusCardPtr->Event();
+		VenusCardPtr->SpecialEvent();
 		IsVenusCardHangoutUsed[4] = true;
 		break;
 	default:
@@ -1172,8 +1144,6 @@ Decision VenusSceneSimulator::_evaluateDuringTurnDecision()
 	if (Turn == 77) return Decision::None;
 	if (IsTargetRace()) return Decision::TargetRace;
 	if (IsPreferRace() && DataManager::Instance().UsePreferedRace) return Decision::PreferRace;
-	// TrainSpeed,TrainStamina,TrainPower,TrainWill,TrainInt,Rest,SummerRest,
-	// Hangout,HangoutRed,HangoutBlue,HangoutYellow,HangoutAll,HangoutEnd,Race
 	_decisionValue.fill(0.0f);
 	int remainVital = MaxVital - Vital;
 
@@ -1221,7 +1191,7 @@ Decision VenusSceneSimulator::_evaluateDuringTurnDecision()
 		_decisionValue[12] += 30;
 	}
 	_decisionValue[8] += std::min(45, remainVital) + 35 * Turn / 78;
-	_decisionValue[9] += std::min(32, remainVital) + 48 * Turn / 78;
+	_decisionValue[9] += std::min(32, remainVital) + 47 * Turn / 78;
 	_decisionValue[10] += std::min(32, remainVital) + 48 * Turn / 78;
 	_decisionValue[11] += std::min(45, remainVital) + 35 * Turn / 78;
 	_decisionValue[12] += std::min(52, remainVital) + 28 * Turn / 78;

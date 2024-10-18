@@ -3,14 +3,12 @@
 std::default_random_engine generator(static_cast<unsigned int>(time(NULL)));
 std::uniform_real_distribution<float> unif;
 
-// 0到1的隨機數
 float GetZeroOneRandomFloat()
 {
 	float randomValue = unif(generator);
 	return randomValue;
 }
 
-// 權重隨機
 int WeightedRandom(const std::vector<int>& weights)
 {
 	// 計算權重的總和

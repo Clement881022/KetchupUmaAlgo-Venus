@@ -63,7 +63,7 @@ void Facility::Click()
 		}
 		if (card->HaveHint)
 		{
-			hintCards.emplace_back(card); 
+			hintCards.emplace_back(card);
 		}
 	}
 

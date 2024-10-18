@@ -30,7 +30,7 @@ void VenusCard::UpdateStatus(Train trainType, int facilityLevel, int currentTurn
 
 	HaveBlueVenusHint = false;
 	TriggerSpecialEvent = false;
-	SpecialEventChance =  0.4f  + 0.004f * static_cast<float>(BlueVenusLevelToHintChance[blueVenusLevel]);
+	SpecialEventChance = 0.4f + 0.004f * static_cast<float>(BlueVenusLevelToHintChance[blueVenusLevel]);
 
 	if (IsZone)
 	{
@@ -73,7 +73,6 @@ void VenusCard::CheckZoneEnd()
 
 void VenusCard::SpecialEvent()
 {
-	if (!TriggerSpecialEvent) return;
 	if (TriggerSpecialEvent && CanHangOut && !IsZone)
 	{
 		IsZone = true;

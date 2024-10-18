@@ -96,15 +96,15 @@ void SpiritTower::Update()
 
 	if (!IsFull()) return;
 
-	if (leftCount > rightCount) 
+	if (leftCount > rightCount)
 	{
 		Tower[0][0].SpiritColor = left;
 	}
-	else if (rightCount > leftCount) 
+	else if (rightCount > leftCount)
 	{
 		Tower[0][0].SpiritColor = right;
 	}
-	else 
+	else
 	{
 		Tower[0][0].SpiritColor = (GetZeroOneRandomFloat() < 0.5f) ? left : right;
 	}
