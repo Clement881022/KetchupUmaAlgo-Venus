@@ -9,6 +9,10 @@ SupportCard::SupportCard(SupportCardData cardData, bool haveHint, int currentBon
 	HaveBlueVenusHint = false;
 }
 
+SupportCard::~SupportCard()
+{
+}
+
 void SupportCard::Reset(SupportCardData cardData, bool haveHint, int currentBond)
 {
 	CardData = cardData;

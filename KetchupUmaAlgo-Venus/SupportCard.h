@@ -8,6 +8,8 @@ class SupportCard
 {
 public:
 	SupportCard(SupportCardData cardData, bool haveHint, int currentBond);
+	virtual ~SupportCard();
+
 	void Reset(SupportCardData cardData, bool haveHint, int currentBond);
 	void Event();
 	void BlueWisdom();
