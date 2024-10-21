@@ -153,6 +153,7 @@ void VenusSceneSimulator::PrintInfo()
 		std::cout << TrainToString[i] << std::endl;
 		for (SupportCard* card : Facilities[i]->SupportCards)
 		{
+			if (card == nullptr) continue;
 			if (card->HaveBlueVenusHint) std::cout << "[!!]";
 			if (card->HaveHint) std::cout << "[!]";
 			if (card->IsShining) std::cout << "[*]";
@@ -820,6 +821,7 @@ bool VenusSceneSimulator::SpiritEventPossible(Decision decision)
 	{
 		for (SupportCard* card : Facilities[decisionIndex]->SupportCards)
 		{
+			if (card == nullptr) continue;
 			if (card == VenusCardPtr) return true;
 		}
 	}
@@ -841,7 +843,7 @@ void VenusSceneSimulator::_pushSpirit(Train train)
 
 void VenusSceneSimulator::_reshuffleSupportCard()
 {
-	std::vector<int> weight = { 100,100,100,100,100,0,0,0,50 };
+	std::array<int,9> weight = { 100,100,100,100,100,0,0,0,50 };
 	for (int i = 0; i < 6; i++)
 	{
 		weight = { 100,100,100,100,100,0,0,0,50 };
@@ -880,8 +882,7 @@ void VenusSceneSimulator::_reshuffleSpirits()
 	// randomize spirit status
 	for (int i = 0; i < 8; i++)
 	{
-		std::vector<int> vec(SpiritTypeWeight[i].begin(), SpiritTypeWeight[i].end());
-		int statusRandomIndex = WeightedRandom(vec);
+		int statusRandomIndex = WeightedRandom(SpiritTypeWeight[i]);
 		SpiritDistribution[i].SpiritStatus = static_cast<Status>(statusRandomIndex);
 	}
 
@@ -930,12 +931,13 @@ void VenusSceneSimulator::_updateTrainValue()
 			float trainBonus = 1.0f;
 			float motivationBonus = MotivationEffect[Motivation];
 			float friendBonus = 1.0f;
-			float headBonus = 1.0f + Facilities[trainIndex]->SupportCards.size() * 0.05f;
+			float headBonus = 1.0f + Facilities[trainIndex]->GetSupportCardsSize() * 0.05f;
 			int spiritBonus = TowerSystem->GetStatusBonus()[statusIndex];
 			float venusBonus = 1.0f;
 
 			for (SupportCard* card : Facilities[trainIndex]->SupportCards)
 			{
+				if (card == nullptr) continue;
 				statusBonus += card->CardData.StatusBonus[statusIndex];
 				trainBonus += card->CardData.TrainBonus / 100.0f;
 				friendBonus *= (1.0f + card->CardData.FriendBonus / 100.0f);
@@ -948,6 +950,7 @@ void VenusSceneSimulator::_updateTrainValue()
 			}
 
 			int floorTrainValue = (basicValue + statusBonus) * growRate * trainBonus * motivationBonus * friendBonus * headBonus;
+			floorTrainValue = std::min(100, floorTrainValue);
 			int sceneTrainValue = (floorTrainValue + spiritBonus) * venusBonus;
 			TrainValue[trainIndex][statusIndex] = sceneTrainValue;
 		}
@@ -955,9 +958,10 @@ void VenusSceneSimulator::_updateTrainValue()
 		// simulate hint
 		for (SupportCard* card : Facilities[trainIndex]->SupportCards)
 		{
+			if (card == nullptr) continue;
 			if (card->HaveHint)
 			{
-				TrainValue[trainIndex][5] += 20;
+				TrainValue[trainIndex][5] += DataManager::Instance().HintPtValue;
 				break;
 			}
 		}
@@ -966,11 +970,13 @@ void VenusSceneSimulator::_updateTrainValue()
 		std::array<int, 6> blueVenusHintStatus = { 0,0,0,0,0,0 };
 		for (SupportCard* card : Facilities[trainIndex]->SupportCards)
 		{
+			if (card == nullptr) continue;
 			if (!card->HaveBlueVenusHint || card == VenusCardPtr) continue;
 			for (int statusIndex = 0; statusIndex < 6; statusIndex++)
 			{
 				blueVenusHintStatus[statusIndex] += BlueVenusHintValue[card->CardData.Type][statusIndex];
 			}
+			blueVenusHintStatus[5] += DataManager::Instance().HintPtValue;
 		}
 
 		std::array<int, 6> blueVenusSpiritStatus = { 0,0,0,0,0,0 };
@@ -1007,6 +1013,7 @@ void VenusSceneSimulator::_updateVitalCost()
 	VitalCost[4] = 5;
 	for (SupportCard* card : Facilities[4]->SupportCards)
 	{
+		if (card == nullptr) continue;
 		if (card->IsShining)
 		{
 			VitalCost[4] += card->CardData.VitalBonus;
@@ -1117,17 +1124,18 @@ bool VenusSceneSimulator::_evaluateBeforeTurnDecision()
 		if (IsTargetRace() || IsPreferRace()) return false;
 		for (int i = 0; i < 5; i++)
 		{
-			if (Facilities[i]->SupportCards.size() >= 2) return true;
+			if (Facilities[i]->GetSupportCardsSize() >= 2) return true;
 		}
 		break;
 	case Color::Yellow:
 		if (IsTargetRace() || IsPreferRace()) return false;
 		for (int i = 0; i < 5; i++)
 		{
-			if (Facilities[i]->SupportCards.size() >= 3) return true;
+			if (Facilities[i]->GetSupportCardsSize() >= 3) return true;
 			int additionalShineCount = 0;
 			for (SupportCard* card : Facilities[i]->SupportCards)
 			{
+				if (card == nullptr) continue;
 				if (!card->IsShining) additionalShineCount++;
 			}
 			if (additionalShineCount >= 2) return true;
@@ -1228,6 +1236,7 @@ Decision VenusSceneSimulator::_evaluateDuringTurnDecision()
 		float successRate = 1.0f - FailRate[i];
 		for (SupportCard* card : Facilities[i]->SupportCards)
 		{
+			if (card == nullptr) continue;
 			if (card == VenusCardPtr)
 			{
 				if (!VenusCardPtr->IsActivated) { _decisionValue[i] += 40; }
@@ -1250,6 +1259,7 @@ Decision VenusSceneSimulator::_evaluateDuringTurnDecision()
 		float successRate = 1.0f - FailRate[i];
 		for (SupportCard* card : Facilities[i]->SupportCards)
 		{
+			if (card == nullptr) continue;
 			if (card->Bond <= 73 && card->HaveHint) _decisionValue[i] += 7 * successRate;
 			break;
 		}

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <vector>
 #include <string>
 #include <memory>
 #include "Globals.h"
@@ -21,10 +20,11 @@ public:
 	void YellowWisdom();
 	void BlueWisdom();
 	void SetSupportCard(SupportCard* card);
+	int GetSupportCardsSize();
 
 	int Level;
 	int MaxLevel;
 	float LevelScore;
-	std::vector<SupportCard*> SupportCards;
+	std::array<SupportCard*,6> SupportCards;
 	Train TrainType;
 };

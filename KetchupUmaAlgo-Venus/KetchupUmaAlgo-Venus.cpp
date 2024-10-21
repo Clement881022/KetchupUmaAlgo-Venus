@@ -4,6 +4,7 @@
 #include "Globals.h"
 #include <future>
 #include "Windows.h"
+#include <conio.h>
 
 float SimulateDecisionRun(TurnData thisTurn, DecisionSet decisionSet, int times)
 {
@@ -29,6 +30,15 @@ float SimulateDecisionRun(TurnData thisTurn, DecisionSet decisionSet, int times)
 	return average;
 }
 
+void CheckForResetKey(bool& recalculate)
+{
+	while (true)
+	{
+		if (_kbhit() && _getch() == ' ') { recalculate = true; }
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	}
+}
+
 int main()
 {
 	// Set cmd
@@ -40,12 +50,16 @@ int main()
 	SetConsoleScreenBufferSize(hConsole, bufferSize);
 
 	// Init
+	bool recalculate = true;
 	int currentTurn = -1;
 	DataManager::Instance().Initialize();
+
+	std::thread resetKeyThread(CheckForResetKey, std::ref(recalculate));
 
 	// Simulate
 	while (1)
 	{
+		if (recalculate) { currentTurn = -1; recalculate = false; }
 		TurnData thisTurn = DataManager::Instance().GetThisTurn();
 		if (thisTurn.Turn == currentTurn) { std::this_thread::sleep_for(std::chrono::seconds(1)); continue; }
 		currentTurn = thisTurn.Turn;

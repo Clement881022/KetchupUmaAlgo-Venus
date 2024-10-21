@@ -4,6 +4,7 @@
   "DecisionExtraRound":3,
 
   "MasterOfGoodFieldPtValue":0,
+  "HintPtValue":20,
   "UsePreferRaces": true,
   "AlwaysShowRace": true,
 

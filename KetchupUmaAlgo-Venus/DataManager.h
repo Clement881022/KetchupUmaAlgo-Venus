@@ -20,6 +20,7 @@ public:
 	int ShowDecisionNum;
 	int DecisionExtraRound;
 	int MasterOfGoodFieldPtValue;
+	int HintPtValue;
 	bool UsePreferedRace;
 	bool AlwaysShowRace;
 	std::array<int, 6> TargetStatus;

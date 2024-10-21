@@ -96,6 +96,8 @@ void DataManager::InitSetting(json jsonSetting)
 	MasterOfGoodFieldPtValue = jsonSetting.value("MasterOfGoodFieldPtValue", 100);
 	std::cout << "MasterOfGoodFieldPtValue: " << MasterOfGoodFieldPtValue << std::endl;
 
+	HintPtValue = jsonSetting.value("HintPtValue", 20);
+	std::cout << "HintPtValue: " << HintPtValue << std::endl;
 
 	UsePreferedRace = jsonSetting.value("UsePreferRaces", false);
 	UsePreferedRace ? std::cout << "UsePreferRaces" << std::endl : std::cout << "NotUsePreferRaces" << std::endl;

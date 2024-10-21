@@ -9,28 +9,6 @@ float GetZeroOneRandomFloat()
 	return randomValue;
 }
 
-int WeightedRandom(const std::vector<int>& weights)
-{
-	// 計算權重的總和
-	int totalWeight = 0;
-	for (int weight : weights)
-	{
-		totalWeight += weight;
-	}
-
-	// 根據隨機數選擇結果
-	int randomValue = static_cast<int>(GetZeroOneRandomFloat() * totalWeight);
-	int cumulativeWeight = 0;
-	for (int i = 0; i < weights.size(); ++i)
-	{
-		cumulativeWeight += weights[i];
-		if (randomValue < cumulativeWeight)
-		{
-			return i;
-		}
-	}
-	return 0;
-}
 
 SpiritData::SpiritData() {}
 SpiritData::SpiritData(Color color, Status status, int statusAmount, int amount)
