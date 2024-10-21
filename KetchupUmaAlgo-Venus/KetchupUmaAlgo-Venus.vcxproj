@@ -126,9 +126,9 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <HeapReserveSize>32000000</HeapReserveSize>
-      <HeapCommitSize>128000</HeapCommitSize>
+      <HeapCommitSize>8000000</HeapCommitSize>
       <StackReserveSize>32000000</StackReserveSize>
-      <StackCommitSize>128000</StackCommitSize>
+      <StackCommitSize>8000000</StackCommitSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

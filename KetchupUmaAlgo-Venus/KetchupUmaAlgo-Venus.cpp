@@ -70,7 +70,7 @@ int main()
 		bool alwaysShowRace = DataManager::Instance().AlwaysShowRace;
 		bool showScore = DataManager::Instance().ShowScore;
 
-		std::cout << "\n\n====================================\n";
+		std::cout << "\n====================================\n";
 		std::cout << TurnToString[currentTurn] <<"\n";
 
 		// simulate all once and sort score
