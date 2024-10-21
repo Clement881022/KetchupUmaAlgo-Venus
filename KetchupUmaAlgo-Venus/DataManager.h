@@ -23,6 +23,7 @@ public:
 	int HintPtValue;
 	bool UsePreferedRace;
 	bool AlwaysShowRace;
+	bool ShowScore;
 	std::array<int, 6> TargetStatus;
 	std::array<float, 6> BelowTargetStatusScore;
 	std::array<float, 6> OverTargetStatusScore;

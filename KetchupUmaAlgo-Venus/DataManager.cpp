@@ -105,6 +105,9 @@ void DataManager::InitSetting(json jsonSetting)
 	AlwaysShowRace = jsonSetting.value("AlwaysShowRace", false);
 	AlwaysShowRace ? std::cout << "AlwaysShowRace" << std::endl : std::cout << "NotAlwaysShowRace" << std::endl;
 
+	ShowScore = jsonSetting.value("ShowScore", false);
+	ShowScore ? std::cout << "ShowScore" << std::endl : std::cout << "NotShowScore" << std::endl;
+
 	std::cout << std::endl;
 
 	TargetStatus = jsonSetting.value("TargetStatus", std::array<int, 6>{});

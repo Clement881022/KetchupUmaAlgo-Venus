@@ -7,6 +7,7 @@
   "HintPtValue":20,
   "UsePreferRaces": true,
   "AlwaysShowRace": true,
+  "ShowScore": true,
 
   "TargetStatus": [1500, 600, 1260, 1200, 1200, 9999],
   "BelowTargetStatusScore": [4.384, 2.345, 5.098, 1.392, 1.122, 1],

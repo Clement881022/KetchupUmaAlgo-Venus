@@ -44,7 +44,7 @@ int main()
 	// Set cmd
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetWindowPos(GetConsoleWindow(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-	SMALL_RECT windowSize = { 0,0,39,11 };
+	SMALL_RECT windowSize = { 0,0,39,16 };
 	SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
 	COORD bufferSize = { 40,1000 };
 	SetConsoleScreenBufferSize(hConsole, bufferSize);
@@ -68,9 +68,10 @@ int main()
 		int simulateUnitTurn = DataManager::Instance().SimulateUnitTurn;
 		int decisionExtraRound = DataManager::Instance().DecisionExtraRound;
 		bool alwaysShowRace = DataManager::Instance().AlwaysShowRace;
+		bool showScore = DataManager::Instance().ShowScore;
 
 		std::cout << "\n\n====================================\n";
-		std::cout << TurnToString[currentTurn] << std::endl;
+		std::cout << TurnToString[currentTurn] <<"\n";
 
 		// simulate all once and sort score
 		std::array<std::pair<int, std::future<float>>, 32> decisions;
@@ -126,25 +127,29 @@ int main()
 				(topDecisions[i].second.get() * decisionExtraRound + firstRoundScore) / (decisionExtraRound + 1)));
 		}
 		std::sort(topDecisionScores.begin(), topDecisionScores.end(), [](const auto& a, const auto& b) {return a.second > b.second; });
+		std::cout << "\n";
 
 		// print topDecisions
-		std::cout << "\n************************************\n";
-		for (int i = 0; i < topDecisionScores.size(); i++)
+		if (showScore)
 		{
-			if (topDecisionScores[i].second == 0) continue;
-			DecisionSet decisionSet = DecisionSet(topDecisionScores[i].first);
-			if (decisionSet.BeforeTurnDecision) std::cout << "Activate, ";
-			int decisionIndex = static_cast<int>(decisionSet.DuringTurnDecision);
-			std::cout << DecisionToString[decisionIndex] << ": " << topDecisionScores[i].second << "\n";
+			std::cout << "************************************\n";
+			for (int i = 0; i < topDecisionScores.size(); i++)
+			{
+				if (topDecisionScores[i].second == 0) continue;
+				DecisionSet decisionSet = DecisionSet(topDecisionScores[i].first);
+				if (decisionSet.BeforeTurnDecision) std::cout << "Activate, ";
+				int decisionIndex = static_cast<int>(decisionSet.DuringTurnDecision);
+				std::cout << DecisionToString[decisionIndex] << ": " << topDecisionScores[i].second << "\n";
+			}
+			std::cout << "************************************\n";
 		}
-		std::cout << "************************************\n";
 
 		// print result Decision
 		DecisionSet result = DecisionSet(topDecisionScores[0].first);
 		std::cout << "[";
 		if (result.BeforeTurnDecision) std::cout << "Activate, ";
 		int decisionIndex = static_cast<int>(result.DuringTurnDecision);
-		std::cout << DecisionToString[decisionIndex] << "]";
+		std::cout << DecisionToString[decisionIndex] << "]\n";
 
 		// check if spirit event possible
 		if (!simulator->SpiritEventPossible(result.DuringTurnDecision)) { continue; }
@@ -155,9 +160,17 @@ int main()
 		for (int i = 0; i < 3; i++)
 		{
 			result.AfterTurnDecision = static_cast<Color>(i);
-			spirits[i] = std::async(std::launch::async, SimulateDecisionRun, thisTurn, result, simulateUnitTurn);
+			spirits[i] = std::async(std::launch::async, SimulateDecisionRun, thisTurn, result, simulateUnitTurn * decisionExtraRound);
 		}
 		for (int i = 0; i < 3; i++) { spiritScores[i] = spirits[i].get(); }
+		std::cout << "\n";
+
+		if (showScore)
+		{
+			std::cout << "************************************\n";
+			for (int i = 0; i < 3; i++) { std::cout << ColorToString[i] << ": " << spiritScores[i] << "\n"; }
+			std::cout << "************************************\n";
+		}
 
 		auto maxSpirit = std::max_element(spiritScores.begin(), spiritScores.end());
 		int maxSpiritIndex = std::distance(spiritScores.begin(), maxSpirit);
