@@ -492,8 +492,7 @@ void VenusSceneSimulator::AfterTurnDecision(Color color)
 
 	if (color == Color::Random)
 	{
-		int randomColorIndex = GetZeroOneRandomFloat() * 3;
-		color = static_cast<Color>(randomColorIndex);
+		color = _evaluateAfterTurnDecision();
 	}
 
 	switch (color)
