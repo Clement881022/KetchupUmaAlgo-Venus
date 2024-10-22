@@ -11,13 +11,13 @@ Facility::Facility(Train train, float levelScore)
 void Facility::Reset(float levelScore)
 {
 	LevelScore = levelScore;
-	SupportCards.clear();
+	std::vector<SupportCard*>().swap(SupportCards);
 	UpdateLevel();
 }
 
 void Facility::ResetTurn()
 {
-	SupportCards.clear();
+	std::vector<SupportCard*>().swap(SupportCards);
 	UpdateLevel();
 }
 

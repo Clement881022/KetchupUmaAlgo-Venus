@@ -17,6 +17,7 @@ json DataManager::LoadJsonFile(const std::string& filename)
 
 	json j;
 	file >> j;
+	file.close();
 	return j;
 }
 
