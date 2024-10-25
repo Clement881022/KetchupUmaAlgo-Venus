@@ -936,7 +936,7 @@ void VenusSceneSimulator::_updateTrainValue()
 			{
 				statusBonus += card->CardData.StatusBonus[statusIndex];
 				trainBonus += card->CardData.TrainBonus / 100.0f;
-				friendBonus *= (1.0f + card->CardData.FriendBonus / 100.0f);
+				if (card->IsShining) friendBonus *= (1.0f + card->CardData.FriendBonus / 100.0f);
 			}
 
 			for (int i = 0; i < 3; i++)
