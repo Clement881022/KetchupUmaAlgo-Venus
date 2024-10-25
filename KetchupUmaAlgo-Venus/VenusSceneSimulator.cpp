@@ -597,7 +597,7 @@ void VenusSceneSimulator::Click(Train train)
 		failStatus[trainIndex] = -5;
 		StatusChange(failStatus, false);
 	}
-	else if (random <= failChance && train != Train::Int)
+	else if (random <= failChance && train == Train::Int)
 	{
 		VitalChange(5);
 	}
