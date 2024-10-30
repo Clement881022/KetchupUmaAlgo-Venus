@@ -924,9 +924,9 @@ void VenusSceneSimulator::_updateTrainValue()
 			if (basicValue == 0) { TrainValue[trainIndex][statusIndex] = 0; continue; }
 
 			int statusBonus = 0;
-			float growRate = 1.0f + UmaDatas.StatusBonus[statusIndex] / 100.0f;
+			float growRate = UmaDatas.StatusBonus[statusIndex];
 			float trainBonus = 1.0f;
-			float motivationBonus = MotivationEffect[Motivation];
+			float motivationBonus = 1.0f;
 			float friendBonus = 1.0f;
 			float headBonus = 1.0f + Facilities[trainIndex]->SupportCards.size() * 0.05f;
 			int spiritBonus = TowerSystem->GetStatusBonus()[statusIndex];
@@ -936,8 +936,10 @@ void VenusSceneSimulator::_updateTrainValue()
 			{
 				statusBonus += card->CardData.StatusBonus[statusIndex];
 				trainBonus += card->CardData.TrainBonus / 100.0f;
+				motivationBonus += card->CardData.MotivationBonus / 100.0f ;
 				if (card->IsShining) friendBonus *= (1.0f + card->CardData.FriendBonus / 100.0f);
 			}
+			motivationBonus = 1.0f + (MotivationEffect[Motivation] - 1.0f) * motivationBonus;
 
 			for (int i = 0; i < 3; i++)
 			{
