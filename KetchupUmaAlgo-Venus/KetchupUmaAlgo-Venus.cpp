@@ -27,7 +27,12 @@ float SimulateDecisionRun(TurnData thisTurn, DecisionSet decisionSet, int times)
 
 	float sum = std::accumulate(result.begin(), result.end(), 0.0);
 	float average = sum / times;
-	return average;
+	float variance = 0.0f;
+	for (float value : result) { variance += (value - average) * (value - average); }
+	variance /= result.size();
+	float stddev = std::sqrt(variance);
+
+	return average + stddev;
 }
 
 void CheckForResetKey(bool& recalculate)
@@ -71,11 +76,11 @@ int main()
 		bool showScore = DataManager::Instance().ShowScore;
 
 		std::cout << "\n====================================\n";
-		std::cout << TurnToString[currentTurn] <<"\n";
+		std::cout << TurnToString[currentTurn] << "\n";
 
 		// simulate all once and sort score
 		std::array<std::pair<int, std::future<float>>, 32> decisions;
-		std::array< std::pair<int, float>, 32> decisionScores;
+		std::array<std::pair<int, float>, 32> decisionScores;
 		for (int i = 0; i < 32; i++)
 		{
 			decisions[i].first = i;
