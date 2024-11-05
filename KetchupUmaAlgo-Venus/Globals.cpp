@@ -9,6 +9,23 @@ float GetZeroOneRandomFloat()
 	return randomValue;
 }
 
+int WeightedRandom(std::span<const int> weights)
+{
+	int totalWeight = 0;
+	for (int weight : weights)
+	{
+		totalWeight += weight;
+	}
+
+	int randomValue = static_cast<int>(GetZeroOneRandomFloat() * totalWeight);
+	int cumulativeWeight = 0;
+	for (int i = 0; i < weights.size(); ++i)
+	{
+		cumulativeWeight += weights[i];
+		if (randomValue < cumulativeWeight) return i;
+	}
+	return 0;
+}
 
 SpiritData::SpiritData() {}
 SpiritData::SpiritData(Color color, Status status, int statusAmount, int amount)
