@@ -1,7 +1,7 @@
 #include "Globals.h"
 
 std::default_random_engine generator(static_cast<unsigned int>(time(NULL)));
-std::uniform_real_distribution<float> unif;
+std::uniform_real_distribution<float> unif(0.0f, 0.9999f);
 
 float GetZeroOneRandomFloat()
 {
