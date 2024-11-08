@@ -155,30 +155,5 @@ int main()
 		if (result.BeforeTurnDecision) std::cout << "Activate, ";
 		int decisionIndex = static_cast<int>(result.DuringTurnDecision);
 		std::cout << DecisionToString[decisionIndex] << "]\n";
-
-		// check if spirit event possible
-		if (!simulator->SpiritEventPossible(result.DuringTurnDecision)) { continue; }
-
-		// simulate spirit
-		std::array<std::future<float>, 3> spirits;
-		std::array<float, 3> spiritScores = { 0.0f };
-		for (int i = 0; i < 3; i++)
-		{
-			result.AfterTurnDecision = static_cast<Color>(i);
-			spirits[i] = std::async(std::launch::async, SimulateDecisionRun, thisTurn, result, simulateUnitTurn * decisionExtraRound);
-		}
-		for (int i = 0; i < 3; i++) { spiritScores[i] = spirits[i].get(); }
-		std::cout << "\n";
-
-		if (showScore)
-		{
-			std::cout << "************************************\n";
-			for (int i = 0; i < 3; i++) { std::cout << ColorToString[i] << ": " << spiritScores[i] << "\n"; }
-			std::cout << "************************************\n";
-		}
-
-		auto maxSpirit = std::max_element(spiritScores.begin(), spiritScores.end());
-		int maxSpiritIndex = std::distance(spiritScores.begin(), maxSpirit);
-		std::cout << "Take [" << ColorToString[maxSpiritIndex] << "]";
 	}
 }
