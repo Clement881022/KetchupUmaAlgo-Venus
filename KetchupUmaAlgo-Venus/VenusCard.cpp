@@ -48,6 +48,7 @@ void VenusCard::Click()
 {
 	Bond = std::min(100, Bond + 5);
 	IsActivated = true;
+	_rollSpecialEvent();
 }
 
 void VenusCard::TriggerHint()

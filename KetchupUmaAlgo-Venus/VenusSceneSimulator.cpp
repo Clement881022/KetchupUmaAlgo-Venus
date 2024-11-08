@@ -513,9 +513,9 @@ void VenusSceneSimulator::AfterTurnDecision(Color color)
 
 	int randomStatusIndex = GetZeroOneRandomFloat() * 6;
 	Status status = static_cast<Status>(randomStatusIndex);
-
 	SpiritData data = SpiritData(color, status, 0, 1);
 	TowerSystem->Push(data);
+	VenusCardPtr->SpecialEvent();
 }
 
 void VenusSceneSimulator::StatusChange(std::array<int, 6> status, bool takeRaceBonus)
