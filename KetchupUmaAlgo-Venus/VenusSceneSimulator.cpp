@@ -522,7 +522,7 @@ void VenusSceneSimulator::StatusChange(std::array<int, 6> status, bool takeRaceB
 {
 	float raceBonus = takeRaceBonus ? _raceBonus : 1.0f;
 
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		int result = CurrentStatus[i] > 1200 ? CurrentStatus[i] * 2 - 1200 : CurrentStatus[i];
 		result += static_cast<int>((static_cast<float>(status[i]) * raceBonus));
@@ -531,6 +531,7 @@ void VenusSceneSimulator::StatusChange(std::array<int, 6> status, bool takeRaceB
 		result = std::max(0, result);
 		CurrentStatus[i] = result;
 	}
+	CurrentStatus[5] += static_cast<int>((static_cast<float>(status[5]) * raceBonus));
 }
 
 void VenusSceneSimulator::RandomStatusChange(int amount, bool takeRaceBonus)
