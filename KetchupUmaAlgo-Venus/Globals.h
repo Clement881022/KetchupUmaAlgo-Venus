@@ -250,7 +250,29 @@ const std::array<float, 6> StatusValue = { 1.0f,2.0f,1.5f,1.5f,1.0f,0.8f };
 extern std::default_random_engine generator;
 extern std::uniform_real_distribution<float> unif;
 float GetZeroOneRandomFloat();
-int WeightedRandom(std::span<const int> weights);
+
+template<std::size_t N>
+int WeightedRandom(std::array<int, N> weights)
+{
+	// 計算權重的總和
+	int totalWeight = 0;
+	for (int weight : weights)
+	{
+		totalWeight += weight;
+	}
+
+	// 根據隨機數選擇結果
+	int randomValue = static_cast<int>(GetZeroOneRandomFloat() * totalWeight);
+	int cumulativeWeight = 0;
+	for (std::size_t i = 0; i < N; ++i)
+	{
+		cumulativeWeight += weights[i];
+		if (randomValue < cumulativeWeight) {
+			return static_cast<int>(i);
+		}
+	}
+	return 0; // 預設返回第一個索引
+}
 
 struct SpiritData
 {
