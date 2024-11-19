@@ -34,7 +34,7 @@ SpiritData::SpiritData(int index)
 		index %= 32;
 		SpiritStatus = static_cast<Status>(index % 8 - 1);
 		SpiritColor = static_cast<Color>(index / 8);
-		StatusAmount = 0;
+		StatusAmount = 1;
 	}
 }
 

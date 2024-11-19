@@ -17,16 +17,17 @@ SpiritTower::SpiritTower(std::array<SpiritData, 15> data, std::array<int, 3> ven
 	for (int i = 0;i < 4;i++)
 	{
 		Tower[2][i] = data[i + 8];
+		Tower[2][i].StatusAmount = Tower[3][i * 2].SpiritColor == Tower[3][i * 2 + 1].SpiritColor ? 2 : 3;
 	}
 	for (int i = 0;i < 2;i++)
 	{
 		Tower[1][i] = data[i + 8 + 4];
+		Tower[1][i].StatusAmount = Tower[2][i * 2].SpiritColor == Tower[2][i * 2 + 1].SpiritColor ? 2 : 3;
 	}
 	Tower[0][0] = data[14];
 
 	VenusLevel = venusLevel;
 	Activated = false;
-	Update();
 }
 
 void SpiritTower::Reset(std::array<SpiritData, 15> data, std::array<int, 3> venusLevel)
@@ -38,16 +39,17 @@ void SpiritTower::Reset(std::array<SpiritData, 15> data, std::array<int, 3> venu
 	for (int i = 0;i < 4;i++)
 	{
 		Tower[2][i] = data[i + 8];
+		Tower[2][i].StatusAmount = Tower[3][i * 2 + 1].SpiritColor == Tower[3][i * 2 + 1].SpiritColor ? 2 : 3;
 	}
 	for (int i = 0;i < 2;i++)
 	{
 		Tower[1][i] = data[i + 8 + 4];
+		Tower[1][i].StatusAmount = Tower[2][i * 2 + 1].SpiritColor == Tower[2][i * 2 + 1].SpiritColor ? 2 : 3;
 	}
 	Tower[0][0] = data[14];
 
 	VenusLevel = venusLevel;
 	Activated = false;
-	Update();
 }
 
 void SpiritTower::Clear()
