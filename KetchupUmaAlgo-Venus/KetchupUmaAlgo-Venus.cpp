@@ -27,12 +27,7 @@ float SimulateDecisionRun(TurnData thisTurn, DecisionSet decisionSet, int times)
 
 	float sum = std::accumulate(result.begin(), result.end(), 0.0);
 	float average = sum / times;
-	float variance = 0.0f;
-	for (float value : result) { variance += (value - average) * (value - average); }
-	variance /= result.size();
-	float stddev = std::sqrt(variance);
-
-	return average + stddev;
+	return average;
 }
 
 void CheckForResetKey(bool& recalculate)
